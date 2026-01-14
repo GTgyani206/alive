@@ -6,6 +6,15 @@ import type { AnimeStyle, UploadResponse } from '@/types';
 
 export async function POST(request: NextRequest): Promise<NextResponse<UploadResponse>> {
     try {
+        // Check if Supabase is configured
+        if (!supabaseAdmin) {
+            console.error('Supabase not configured - missing environment variables');
+            return NextResponse.json({
+                success: false,
+                error: 'Database not configured. Please set Supabase environment variables on Vercel.'
+            }, { status: 503 });
+        }
+
         const formData = await request.formData();
         const file = formData.get('file') as File | null;
         const sessionToken = formData.get('sessionToken') as string | null;

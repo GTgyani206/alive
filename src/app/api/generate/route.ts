@@ -5,10 +5,19 @@ import { generateAnimeAvatar, base64ToBlob } from '@/lib/gemini';
 import { generateId } from '@/lib/utils';
 import type { AnimeStyle, GenerateResponse } from '@/types';
 
-export const maxDuration = 60;
+export const maxDuration = 120; // Increase timeout for image generation
 
 export async function POST(request: NextRequest): Promise<NextResponse<GenerateResponse>> {
     try {
+        // Check if Supabase is configured
+        if (!supabaseAdmin) {
+            console.error('Supabase not configured - missing environment variables');
+            return NextResponse.json({
+                success: false,
+                error: 'Database not configured. Please set Supabase environment variables on Vercel.'
+            }, { status: 503 });
+        }
+
         const body = await request.json();
         const { generationId, imageBase64, style = 'modern' } = body as {
             generationId: string;
