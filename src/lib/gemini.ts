@@ -52,9 +52,12 @@ export async function generateAnimeAvatar(
     const stylePrompt = STYLE_PROMPTS[style];
 
     const prompt = `Transform this person's photo into an anime-style 3D avatar character ${stylePrompt}. 
-Keep the person's distinctive features like face shape, hairstyle, and overall appearance recognizable. 
-Make it suitable as a profile avatar with a clean background. 
-The result should be a beautiful, high-quality anime character portrait that captures the essence of the original person.`;
+
+IMPORTANT: Preserve the FULL composition of the original image. If the person is shown full-body in the photo, generate a FULL-BODY anime character. If it's a portrait, generate a portrait. DO NOT crop or change the framing - maintain the exact same body composition as the input image.
+
+Keep the person's distinctive features like face shape, hairstyle, body proportions, clothing, and overall appearance recognizable. 
+Use a clean, simple background that complements the character.
+The result should be a beautiful, high-quality anime character that captures the essence and full composition of the original person.`;
 
     try {
         const imageDataUrl = imageBase64.startsWith('data:')
